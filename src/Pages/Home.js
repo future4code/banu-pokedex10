@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import { Header, Titulo, HeaderButton, Main, ImagemCard, Card, ButtonCard, Button } from "../Styled/StyledHome";
 import { useHistory } from "react-router-dom";
 import { BASE_URL } from "../url/Base_url";
@@ -8,7 +8,8 @@ import axios from "axios";
 function  Home () {
     
     const [pokemon, setPokemon] = useState([])
-    const [urls, setUrls] = useState([])
+    const [details, setDetails] = useState([])
+
 
     const history = useHistory()
 
@@ -20,40 +21,55 @@ function  Home () {
         history.push("/DetalhePokemon")
     }
  
+    useEffect(() => {
+      
+    getPokemon()
+
+    }, []);
+
     
     const getPokemon = async () => {
         try {
-            const response = await axios.get(`${BASE_URL}/pokemon/?offset=20&limit=20"`)
+        const response = await axios.get(`${BASE_URL}/pokemon/?offset=20&limit=20"`)
         setPokemon(response.data.results)
-       console.log(pokemon)
+     
        }
        catch (error) {
            alert("Algo deu errado")
        }
     }
 
-
     const detailsPokemon = async () => {
         try {
-            const response = await axios.get(urls)
-        // setPokemon(response.data.results)
-       console.log(response)
+        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemon[0].name}`)
+         
+        setDetails(response)
+        alert("to setando")
        }
        catch (error) {
-           alert("deu errado")
+           console.log(error)
+           alert("deu errado", error)
        }
     }
-
-    const Estado = () => {
-        pokemon.forEach(item => {
-            setUrls(item.url)
-            console.log(urls) 
-        })
-    }
+    const listPokemon = pokemon
+    .map((poke)=>{
+        return (
+        <Card key={poke.id}> 
+            <h3>{poke.name}</h3>
 
 
-
-   
+        {poke.sprites && (
+        <ImagemCard src={poke.sprites.front_default} alt={poke.name} />
+        )}
+        {poke.url}
+         
+            <ButtonCard>         
+            <Button >Adicionar a Pokédex</Button>
+            <Button onClick={detailsPokemon}> Ver detalhes</Button>
+            </ButtonCard>
+            </Card>
+        )
+    })
 
   return (
     <div>
@@ -61,79 +77,12 @@ function  Home () {
             <HeaderButton onClick={goToPokedex}>Ir para Pokedex</HeaderButton>
             <Titulo>Lista de Pokemons</Titulo>
         </Header>
+    
         <Main>
-            <Card>
-                
-                <ImagemCard src='https://picsum.photos/200/150' alt="Imagem "/>
-                <ButtonCard>
-                    
-                    <Button onClick={Estado} >Adicionar a Pokédex</Button>
-                    <Button onClick={getPokemon} > Ver detalhes</Button>
-                </ButtonCard>
-            </Card>
-            <Card>
-                <ImagemCard src='https://picsum.photos/200/150' alt="Imagem "/>
-                <ButtonCard>
-                    <Button onClick={detailsPokemon}>Adicionar a Pokédex</Button>
-                    <Button onClick={goToDetails}>Ver detalhes</Button>
-                </ButtonCard>    
-            </Card>
-            <Card>
-                <ImagemCard src='https://picsum.photos/200/150' alt="Imagem "/>
-                <ButtonCard>
-                    <Button>Adicionar a Pokédex</Button>
-                    <Button onClick={goToDetails}>Ver detalhes</Button>
-                </ButtonCard>    
-            </Card>
-            <Card>
-                <ImagemCard src='https://picsum.photos/200/150' alt="Imagem "/>
-                <ButtonCard>
-                    <Button>Adicionar a Pokédex</Button>
-                    <Button onClick={goToDetails}>Ver detalhes</Button>
-                </ButtonCard>
-            </Card>
-            <Card>
-                <ImagemCard src='https://picsum.photos/200/150' alt="Imagem "/>
-                <ButtonCard>
-                    <Button>Adicionar a Pokédex</Button>
-                    <Button onClick={goToDetails}>Ver detalhes</Button>
-                </ButtonCard>
-            </Card>
-            <Card>
-                <ImagemCard src='https://picsum.photos/200/150' alt="Imagem "/>
-                <ButtonCard>
-                    <Button>Adicionar a Pokédex</Button>
-                    <Button onClick={goToDetails}>Ver detalhes</Button>
-                </ButtonCard>
-            </Card>
-            <Card>
-                <ImagemCard src='https://picsum.photos/200/150' alt="Imagem "/>
-                <ButtonCard>
-                    <Button>Adicionar a Pokédex</Button>
-                    <Button onClick={goToDetails}>Ver detalhes</Button>
-                </ButtonCard>
-            </Card>
-            <Card>
-                <ImagemCard src='https://picsum.photos/200/150' alt="Imagem "/>
-                <ButtonCard>
-                    <Button>Adicionar a Pokédex</Button>
-                    <Button onClick={goToDetails}>Ver detalhes</Button>
-                </ButtonCard>
-            </Card>
-            <Card>
-                <ImagemCard src='https://picsum.photos/200/150' alt="Imagem "/>
-                <ButtonCard>
-                    <Button>Adicionar a Pokédex</Button>
-                    <Button onClick={goToDetails}>Ver detalhes</Button>
-                </ButtonCard>
-            </Card>
-            <Card>
-                <ImagemCard src='https://picsum.photos/200/150' alt="Imagem "/>
-                <ButtonCard>
-                    <Button>Adicionar a Pokédex</Button>
-                    <Button onClick={goToDetails}>Ver detalhes</Button>
-                </ButtonCard>
-            </Card>
+            {listPokemon}
+            {details.sprites && (
+        <div src={details.sprites.front_default} alt={details.name} />
+        )}
             
         </Main>
     </div>
