@@ -3,13 +3,15 @@ import { Header, Titulo, HeaderButton, Main, ImagemCard, Card, ButtonCard, Butto
 import { useHistory } from "react-router-dom";
 import { BASE_URL } from "../url/Base_url";
 import axios from "axios";
+import { useContext } from "react";
+
 
 
 function  Home () {
     
     const [pokemon, setPokemon] = useState([])
     const [details, setDetails] = useState([])
-
+    const [idPokemon, setIdPokemon] = useState([])
 
     const history = useHistory()
 
@@ -22,12 +24,31 @@ function  Home () {
     }
  
     useEffect(() => {
-      
+
     getPokemon()
 
     }, []);
 
+    useEffect(() => {
+   
+        const dataPokemons = []
+    const listarPoke = pokemon&&pokemon
+    .map((item) => {
+        axios.get(item.url)
+        .then((response)=>{
+            dataPokemons.push(response.data)
+            if(dataPokemons.length === 20){
+                setDetails(dataPokemons)
+            }
+        })
+        .catch((error)=>{
+            alert(error)
+        })
+    })
+        }, [pokemon]);
+
     
+
     const getPokemon = async () => {
         try {
         const response = await axios.get(`${BASE_URL}/pokemon/?offset=20&limit=20"`)
@@ -39,38 +60,37 @@ function  Home () {
        }
     }
 
-    const detailsPokemon = async () => {
-        try {
-        const response = await axios.get(`https://pokeapi.co/api/v2/pokemon/${pokemon[0].name}`)
-         
-        setDetails(response)
-        alert("to setando")
-       }
-       catch (error) {
-           console.log(error)
-           alert("deu errado", error)
-       }
-    }
-    const listPokemon = pokemon
+
+    const addPokedex = (newItem) => {
+        const index = pokemon.findIndex((i) => i.id === newItem.id);
+        let newList = [...pokemon];
+        if (index === -1) {
+          newList.push({ ...newItem, amount: 1 });
+        } else {
+          newList[index].amount += 1;
+        }
+        console.log(newList)
+        setIdPokemon(newList);
+        alert(`${newItem.name} foi adicionado ao seu carrinho!`);
+      };
+
+    const listarPokemon = details
     .map((poke)=>{
-        return (
-        <Card key={poke.id}> 
+        return <div key={poke.id}> 
             <h3>{poke.name}</h3>
-
-
         {poke.sprites && (
         <ImagemCard src={poke.sprites.front_default} alt={poke.name} />
         )}
         {poke.url}
-         
-            <ButtonCard>         
-            <Button >Adicionar a Pokédex</Button>
-            <Button onClick={detailsPokemon}> Ver detalhes</Button>
+      
+         <ButtonCard>      
+            <Button onClick={addPokedex} >Adicionar a Pokédex</Button>
+            <Button> Ver detalhes</Button>
             </ButtonCard>
-            </Card>
-        )
+            </div>
+       
+        
     })
-
   return (
     <div>
         <Header> 
@@ -79,11 +99,8 @@ function  Home () {
         </Header>
     
         <Main>
-            {listPokemon}
-            {details.sprites && (
-        <div src={details.sprites.front_default} alt={details.name} />
-        )}
-            
+        {listarPokemon}
+          
         </Main>
     </div>
   )
