@@ -1,41 +1,31 @@
-import React from "react";
-import { Header, ButtonHeader, Titulo, Main, ImagemCard } from "../Styled/StyledDetalheDoPokemon";
-import { useHistory } from "react-router-dom"
+import React, { useContext, useState, useEffect } from "react";
+import { Header, ButtonHeader, Titulo, PokeInfosContainer } from "../Styled/StyledDetalheDoPokemon";
+import { useNavigate } from "react-router-dom"
+import { goToHome } from "../Router/coordinator";
+import { goToPokedex } from "../Router/coordinator"
+import GlobalStateContext from "../Context/GlobalStateContext";
 
-function DetalhePokemon () {
-    
-    const history = useHistory()
 
-    const goBack = () => {
-        history.goBack()
-    }
+const DetalhePokemon = () => {
+  const navigation = useNavigate();
+  const { pokemons, pokedex } = useContext(GlobalStateContext);
+  const [selectedPokemon, setSelectedPokemon] = useState({});
 
-    const goToPokedex = () => {
-        history.push("/Pokedex")
-    }
- 
+
   return (
     <div>
-        <Header>
-            <ButtonHeader onClick={goBack}> Voltar </ButtonHeader>
+      <Header>
+          <ButtonHeader onClick={() => goToPokedex(navigation)}> Voltar </ButtonHeader>
             <Titulo>Detalhe do Pokemon</Titulo>
-            <ButtonHeader onClick={goToPokedex}> Ir para Pokédex </ButtonHeader>
-        </Header> 
-        <Main>
-            <ImagemCard>
-                <img src='https://picsum.photos/200/150' alt="Imagem "/>
-                <img src='https://picsum.photos/200/150' alt="Imagem "/>
-            </ImagemCard>
-            <div>
-                <p>Poderes</p>
-            </div>
-            <div>
-                <p>Tipo e principais ataques</p>
-            </div>
-
-        </Main>      
+          <ButtonHeader onClick={() => goToHome(navigation)}> Home </ButtonHeader>
+      </Header> 
+      {selectedPokemon && selectedPokemon.sprites && (
+        <PokeInfosContainer>
+        </PokeInfosContainer>
+      )}
     </div>
-  )
-}
+  );
+};
 
 export default DetalhePokemon;
+  
