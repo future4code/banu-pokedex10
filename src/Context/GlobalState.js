@@ -5,44 +5,46 @@ import GlobalStateContext from "./GlobalStateContext";
 
 
 const GlobalState = (props) => {
-    const [pokemonNames, setPokemonNames] = useState([]);
     const [pokemons, setPokemons] = useState([]);
+    const [details, setDetails] = useState([]);
     const [pokedex, setPokedex] = useState([]);
   
     useEffect(() => {
-      getPokemonNames();
+      getPokemon();
     }, []);
   
+
     useEffect(() => {
-      const newList = [];
-      pokemonNames.forEach((item) => {
-        axios
-          .get(`${BASE_URL}/pokemon/${item.name}`)
-          .then((response) => {
-            newList.push(response.data);
-            if (newList.length === 20) {
-              const orderedList = newList.sort((a, b) => {
-                return a.id - b.id;
-              });
-              setPokemons(orderedList);
-            }
-          })
-          .catch((error) => console.log(error.message));
-      });
-    }, [pokemonNames]);
-  
-    const getPokemonNames = () => {
-      axios
-        .get(`${BASE_URL}/pokemon?limit=20`)
-        .then((response) => {
-          setPokemonNames(response.data.results);
-        })
-        .catch((error) => console.log(error.message));
-    };
+    const dataPokemons = []
+    const listarPoke = pokemons&&pokemons
+      .map((item) => {
+      axios.get(item.url)
+      .then((response)=>{
+          dataPokemons.push(response.data)
+          if(dataPokemons.length === 20){
+              setDetails(dataPokemons)
+          }
+      })
+      .catch((error)=>{
+          alert(error)
+      })
+  })
+      }, [pokemons]);
+
+    const getPokemon = async () => {
+      try {
+      const response = await axios.get(`${BASE_URL}/pokemon/?offset=20&limit=20"`)
+      setPokemons(response.data.results)
+   
+     }
+     catch (error) {
+         alert("Algo deu errado")
+     }
+  }
   
     const data = {
-      pokemons,
-      setPokemons,
+      details,
+      setDetails,
       pokedex,
       setPokedex
     };

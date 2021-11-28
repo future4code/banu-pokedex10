@@ -52,9 +52,5 @@ export const ButtonCard = styled.div`
     gap: 5px;
     border-radius: 4px;
 `
-export const Button = styled.button`
-    padding: 8px;
-    border-radius: 4px;
-`
 
 export const PokeListContainer = styled.div``

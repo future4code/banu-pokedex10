@@ -7,15 +7,15 @@ import { ImagemCard } from "../../Styled/StyledHome";
 
 const PokemonCard = (props) => {
   const navigation = useNavigate();
-  const { pokemons, setPokemons, pokedex, setPokedex } = useContext(
+  const { pokemons, setPokemons, pokedex, setPokedex, details, setDetails } = useContext(
     GlobalStateContext
   );
 
   const addToPokedex = () => {
-    const pokeIndex = pokemons.findIndex(
+    const pokeIndex = details.findIndex(
       (item) => item.name === props.poke.name
     );
-    const newPokemonsList = [...pokemons];
+    const newPokemonsList = [...details];
     newPokemonsList.splice(pokeIndex, 1);
     const orderedPokemons = newPokemonsList.sort((a, b) => {
       return a.id - b.id;
@@ -27,7 +27,7 @@ const PokemonCard = (props) => {
     });
 
     setPokedex(orderedPokedex);
-    setPokemons(orderedPokemons);
+    setDetails(orderedPokemons);
   };
 
   const removeFromPokedex = () => {
@@ -41,13 +41,13 @@ const PokemonCard = (props) => {
       return a.id - b.id;
     });
 
-    const newPokemonsList = [...pokemons, props.poke];
+    const newPokemonsList = [...details, props.poke];
     const orderedPokemons = newPokemonsList.sort((a, b) => {
       return a.id - b.id;
     });
 
     setPokedex(orderedPokedex);
-    setPokemons(orderedPokemons);
+    setDetails(orderedPokemons);
   };
 
   return (
