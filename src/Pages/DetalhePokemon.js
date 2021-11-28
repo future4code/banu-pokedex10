@@ -1,5 +1,5 @@
 import React, { useContext, useState, useEffect } from "react";
-import { Header, ButtonHeader, Titulo, PokeInfosContainer } from "../Styled/StyledDetalheDoPokemon";
+import { Header, HeaderButton, Titulo, PokeInfosContainer } from "../Styled/StyledDetalheDoPokemon";
 import { useNavigate } from "react-router-dom"
 import { goToHome } from "../Router/coordinator";
 import { goToPokedex } from "../Router/coordinator"
@@ -15,7 +15,7 @@ const DetalhePokemon = () => {
   return (
     <div>
       <Header>
-          <ButtonHeader onClick={() => goToPokedex(navigation)}> Voltar </ButtonHeader>
+          <HeaderButton onClick={() => goToPokedex(navigation)}> Voltar </HeaderButton>
             <Titulo>Detalhe do Pokemon</Titulo>
           <ButtonHeader onClick={() => goToHome(navigation)}> Home </ButtonHeader>
       </Header> 
