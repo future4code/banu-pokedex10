@@ -1,30 +1,19 @@
 import React from 'react';
-import { BrowserRouter, Switch, Route } from "react-router-dom";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Home from "../Pages/Home";
 import Pokedex from '../Pages/Pokedex';
 import DetalhePokemon from '../Pages/DetalhePokemon';
 
-
-
-export const Router = () =>  {
-
-
+export const Router = () =>  {    
 
   return (
     <BrowserRouter>
-        <Switch>
-            <Route exact path="/" > 
-                <Home />
+        <Routes>
+            <Route path="/" element={<Home/>} />
+            <Route path="pokedex" element={<Pokedex/>} /> 
+            <Route path="/detalhepokemon" element={<DetalhePokemon/>}> 
             </Route>
-        
-            <Route exact path="/Pokedex"> 
-                <Pokedex />
-            </Route>
-
-            <Route exact path="/DetalhePokemon"> 
-                <DetalhePokemon />
-            </Route>
-        </Switch>         
+        </Routes>         
     </BrowserRouter>
   );
 }

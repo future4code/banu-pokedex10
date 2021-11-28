@@ -7,15 +7,21 @@ export const Header = styled.div`
     align-items: center;
     justify-content: center;
     position: relative;
+    margin: -8px;
+    padding: 10px;
 `
 
-export const Titulo = styled.h1`
+export const Titulo = styled.img`
     color: cornsilk; 
+    width: 230px;
+    height: 70px;
 `
 
 export const HeaderButton = styled.button`
     position: absolute;
-    left: 10px;
+    left: 20px;
+    padding: 8px;
+    border-radius: 4px;
 `
 
 export const Main = styled.div`
@@ -36,17 +42,15 @@ export const Card = styled.div`
 
 export const ImagemCard = styled.img`
     width: 80%;
-    margin-left: 10%;
+    margin-left: 10%; 
 `
 export const ButtonCard = styled.div`
     display: flex;
     align-items: center;
     justify-content: center;
     width: 100%;
+    gap: 5px;
+    border-radius: 4px;
 `
-export const Button = styled.button`
-    padding: 8px;
-`
 
-
-
+export const PokeListContainer = styled.div``
